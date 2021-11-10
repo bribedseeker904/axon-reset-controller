@@ -31,8 +31,18 @@ public class MyApp {
 }
 ```
 
+Don't forget to purge your Axon Server event store (WARNING! THIS WILL ERASE ALL YOUR EVENTS):
+
+```
+DELETE http://localhost:8024/v1/devmode/purge-events
+```
+
 And finally ping the controller in a running application with a request like:
 
 ```
 DELETE http://localhost:8080/reset?reason=Starting+test+case+0343
 ```
+
+In case you forget to do the above purge of event store, you will still see the same data although
+your database was actually erased. That is because your event store contains your events so the now-restarted
+processors quickly catch up and replay all events and thus filling your database back into previous state.
